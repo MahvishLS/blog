@@ -2,12 +2,13 @@ const express = require('express')
 const path = require('path');
 const mysql2 = require('mysql2')
 const app = express();
+app.use(express.json());
 
 const database = mysql2.createConnection({
     host:"localhost",
     user:"root",
-    password:"pragnya",
-    database:"users"
+    password:"mahvish",
+    database:"blogdb"
 });
 database.connect((error) => {
     if(error){
@@ -20,15 +21,16 @@ database.connect((error) => {
 app.use(express.urlencoded({extended:true}))
 //ROUTE WHICH IS RESPONSIBLE TO DISPLAY HTML FILE
 app.get('/',(req,res) => {
-    const htmlfile = path.join(__dirname,'frontend\components\register.html');
+    const htmlfile = path.join(__dirname,'../frontend/components/register.html');
     res.sendFile(htmlfile)
 })
 //ROUTE FOR HANDLING FORM SUBMISSIONS
 app.post('/regForm',(req,res) => {
    try{
-        const {name,email,password} = req.body;
-        const SQL_COMMAND = "INSERT INTO userdetails (username,email,password) VALUES (?,?,?)";
-        database.query(SQL_COMMAND,[username,email,password],(err,result) => {
+        const {username,password} = req.body;
+        console.log(req.body);
+        const SQL_COMMAND = "INSERT INTO users (username,password) VALUES (?,?)";
+        database.query(SQL_COMMAND,[username,password],(err,result) => {
             if(err){
                 console.error(err);
                 return res.send("Registration unsuccessful")
