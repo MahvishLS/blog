@@ -136,6 +136,30 @@
             }
         });
 
+        try {
+                        console.log({ username, password });
+                        const response = await fetch('http://localhost:4000/loginForm', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ username, password }),
+                        });
+        
+                        const result = await response.text();
+        
+                        if (response.ok) {
+                            alert('Login successful!');
+                            form.reset();
+                            loginButton.style.display = 'block';
+                        } else {
+                            alert('Login failed: ' + result);
+                        }
+                    } catch (err) {
+                        console.error('Error:', err);
+                        alert('An error occurred during login.');
+                    }
+
         document.getElementById('logoutBtn').addEventListener('click', function() {
             // Reset the UI for login
             document.getElementById('message').textContent = "You have logged out.";
@@ -151,8 +175,7 @@
 
         document.getElementById('writeBtn').addEventListener('click', function() {
             // Redirect to the "Write" page
-            window.location.href = "http://127.0.0.1:5500/frontend/components/write.html";
-
+            window.location.href = 'http://localhost:4000/components/write.html';
         });
     </script>
 
